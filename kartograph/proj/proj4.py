@@ -8,7 +8,7 @@ class Proj4(Proj):
     Generic wrapper around Proj.4 projections
     """
     def __init__(self, projstr):
-        self.proj = pyproj.Proj(projstr)
+        self.proj = pyproj.Proj(str(projstr))
 
     def project(self, lon, lat):
         x, y = self.proj(lon, lat)
