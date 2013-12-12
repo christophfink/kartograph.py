@@ -37,7 +37,11 @@ class ShapefileLayer(LayerSource):
             if srs.ImportFromWkt(prj_text):
                 raise ValueError("Error importing PRJ information from: %s" % prj_file)
             if srs.IsProjected():
-                self.proj = pyproj.Proj(srs.ExportToProj4())
+                try:
+                    self.proj = pyproj.Proj(srs.ExportToProj4())
+                except: # e.g. ERROR 6: No translation for Lambert_Conformal_Conic to PROJ.4 format is known.
+                    srs.MorphFromESRI()
+                    self.proj = pyproj.Proj(srs.ExportToProj4())
                 #print srs.ExportToProj4()
 
     def load_records(self):
